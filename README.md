@@ -59,7 +59,7 @@ TODO: ab -n 10000 -c 50 -k -s 2 http://localhost:8000/
 Spirit uses and encourages [Early Pull Requests](https://medium.com/practical-blend/pull-request-first-f6bb667a9b6). Please don't wait until you're done to open a PR!
 
 1. Install [Git](https://git-scm.com/downloads) and the [.NET Core SDK](https://www.microsoft.com/net/download)
-2. [Fork OpenTK](https://github.com/Ultz/Spirit/fork)
+2. [Fork Spirit](https://github.com/Ultz/Spirit/fork)
 3. Create a branch on your fork.
 4. Add an empty commit to start your work off (and let you open a PR): `git commit --allow-empty -m "start of [thing you're working on]"`
 5. Open a **draft pull request** with `[WIP]` in the title. Do this **before** you actually start working.
