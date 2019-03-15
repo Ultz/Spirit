@@ -10,8 +10,10 @@
 #region
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ultz.Spirit.Core;
@@ -61,8 +63,10 @@ namespace Ultz.Spirit.Http.One
 
                         if (context.Response != null)
                         {
-                            var streamWriter = new StreamWriter(limitedStream);
+                            var streamWriter = new StreamWriter(new MemoryStream());
                             await WriteResponse(context, streamWriter).ConfigureAwait(false);
+                            var bytes = ((MemoryStream) streamWriter.BaseStream).ToArray();
+                            await limitedStream.WriteAsync(bytes, 0, bytes.Length);
                             await limitedStream.ExplicitFlushAsync().ConfigureAwait(false);
 
                             if (!request.Headers.KeepAliveConnection() || context.Response.CloseConnection)
@@ -115,9 +119,12 @@ namespace Ultz.Spirit.Http.One
             // Empty Line
             await writer.WriteLineAsync().ConfigureAwait(false);
 
+            var sw = new StreamWriter(new MemoryStream());
             // Body
-            await response.WriteBody(writer).ConfigureAwait(false);
+            await response.WriteBody(sw).ConfigureAwait(false);
+            var bytes = ((MemoryStream) sw.BaseStream).ToArray();
             await writer.FlushAsync().ConfigureAwait(false);
+            await writer.BaseStream.WriteAsync(bytes, 0, bytes.Length);
         }
 
         private void UpdateLastOperationTime()
