@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Extensions\Ultz.Extensions.Spirit.Handlers\Ultz.Extensions.Spirit.Handlers.csproj" />
+      <ProjectReference Include="..\..\Extensions\Ultz.Extensions.Spirit.Routing\Ultz.Extensions.Spirit.Routing.csproj" />
+      <ProjectReference Include="..\..\Extensions\Ultz.Extensions.Spirit.Ssl\Ultz.Extensions.Spirit.Ssl.csproj" />
+      <ProjectReference Include="..\..\HTTP\Ultz.Spirit.Http.One\Ultz.Spirit.Http.One.csproj" />
+      <ProjectReference Include="..\..\Ultz.Spirit\Ultz.Spirit.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+      <PackageReference Include="Ultz.Extensions.PrivacyEnhancedMail" Version="1.1.2" />
+    </ItemGroup>
+    
+    <Import Project="..\..\..\.nuget\NuGet.props" />
+
+</Project>

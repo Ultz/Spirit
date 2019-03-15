@@ -1,0 +1,9 @@
+<Project>
+    <PropertyGroup>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/Ultz/Spirit</PackageProjectUrl>
+        <PackageReleaseNotes>First release.</PackageReleaseNotes>
+        <PackageVersion>1.0.0-pre</PackageVersion>
+        <Version>1.0.0</Version>
+    </PropertyGroup>
+</Project>
