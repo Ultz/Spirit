@@ -29,16 +29,15 @@ namespace Ultz.Spirit.Http.One
             _child = child;
         }
 
-        public async Task<IHttpRequest> Provide(StreamReader streamReader)
+        public async Task<bool> Provide(StreamReader streamReader, Action<IHttpRequest> onRequest, ILogger logger)
         {
-            var childValue = await _child.Provide(streamReader).ConfigureAwait(false);
+            return await _child.Provide(streamReader, (childValue) =>
+            {
+                string methodName;
+                if (!childValue.Headers.TryGetByName("X-HTTP-Method-Override", out methodName)) onRequest(childValue);
 
-            if (childValue == null) return null;
-
-            string methodName;
-            if (!childValue.Headers.TryGetByName("X-HTTP-Method-Override", out methodName)) return childValue;
-
-            return new HttpRequestMethodDecorator(childValue, HttpMethodProvider.Default.Provide(methodName));
+                onRequest(new HttpRequestMethodDecorator(childValue, HttpMethodProvider.Default.Provide(methodName)));
+            }, logger).ConfigureAwait(false);
         }
 
         public HttpClientHandlerBase Handle

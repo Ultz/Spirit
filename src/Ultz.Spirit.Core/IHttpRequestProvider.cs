@@ -25,8 +25,9 @@ namespace Ultz.Spirit.Core
         ///     May return null / throw exceptions on invalid requests.
         /// </summary>
         /// <param name="streamReader"></param>
+        /// <param name="onRequest"></param>
         /// <returns></returns>
-        Task<IHttpRequest> Provide(StreamReader streamReader);
+        Task<bool> Provide(StreamReader streamReader, Action<IHttpRequest> onRequest, ILogger logger);
 
         HttpClientHandlerBase Handle
         (

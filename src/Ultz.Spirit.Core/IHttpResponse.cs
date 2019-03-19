@@ -9,6 +9,7 @@
 
 #region
 
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace Ultz.Spirit.Core
         HttpResponseCode ResponseCode { get; }
 
         IHttpHeaders Headers { get; }
-
+        [Obsolete("The connection is automatically closed unless it has been explicitly configured to be kept alive.")]
         bool CloseConnection { get; }
         Task WriteBody(StreamWriter writer);
     }

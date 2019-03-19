@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Spirit.Hand
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Spirit.Routing", "src\Extensions\Ultz.Extensions.Spirit.Routing\Ultz.Extensions.Spirit.Routing.csproj", "{FF6D610C-4F98-4D85-9D8A-A7CB9706789C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Spirit.Http.Two", "src\HTTP\Ultz.Spirit.Http.Two\Ultz.Spirit.Http.Two.csproj", "{E58583DC-A83B-4105-97B4-39AF609C932D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,18 @@ Global
 		{FF6D610C-4F98-4D85-9D8A-A7CB9706789C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FF6D610C-4F98-4D85-9D8A-A7CB9706789C}.Release|x86.ActiveCfg = Release|Any CPU
 		{FF6D610C-4F98-4D85-9D8A-A7CB9706789C}.Release|x86.Build.0 = Release|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Debug|x86.Build.0 = Debug|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E58583DC-A83B-4105-97B4-39AF609C932D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,5 +188,6 @@ Global
 		{0A2283E3-DF26-4832-9708-42A145D154FF} = {106CBC0C-E08C-4D0C-B83A-713A740705F2}
 		{9802F58B-36D3-4169-A77E-F9300B3A773D} = {3BA98937-4931-4530-B629-7B3994961B09}
 		{FF6D610C-4F98-4D85-9D8A-A7CB9706789C} = {3BA98937-4931-4530-B629-7B3994961B09}
+		{E58583DC-A83B-4105-97B4-39AF609C932D} = {BFB0F022-FDF9-4D1A-A52F-D71AD8861BE7}
 	EndGlobalSection
 EndGlobal

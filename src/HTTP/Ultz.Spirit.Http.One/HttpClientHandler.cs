@@ -24,7 +24,7 @@ using Ultz.Spirit.Headers;
 
 namespace Ultz.Spirit.Http.One
 {
-    internal sealed class HttpClientHandler : HttpClientHandlerBase
+    public sealed class HttpClientHandler : HttpClientHandlerBase
     {
         public static readonly string Version = "Spirit/" + typeof(HttpServer).Assembly.GetName().Version.ToString(2);
 
@@ -45,39 +45,49 @@ namespace Ultz.Spirit.Http.One
             {
                 while (Client.Connected)
                 {
-                    // TODO : Configuration.
-                    var limitedStream = new NotFlushingStream(new LimitedStream(Stream, 1024 * 1024, 1024 * 1024));
-                    var streamReader = new StreamReader(limitedStream);
+                    var streamReader = new StreamReader(Stream);
 
-                    var request = await RequestProvider.Provide(streamReader).ConfigureAwait(false);
-
-                    if (request != null)
+                    var result = await RequestProvider.Provide(streamReader, async request =>
                     {
-                        UpdateLastOperationTime();
-
-                        var context = new HttpContext(request, Client.RemoteEndPoint);
-
-                        Logger.LogInformation("{1} : Got request {0}", request.Uri, Client.RemoteEndPoint);
-
-                        await RequestHandler(context).ConfigureAwait(false);
-
-                        if (context.Response != null)
+                        try
                         {
-                            var streamWriter = new StreamWriter(new MemoryStream());
-                            await WriteResponse(context, streamWriter).ConfigureAwait(false);
-                            var bytes = ((MemoryStream) streamWriter.BaseStream).ToArray();
-                            await limitedStream.WriteAsync(bytes, 0, bytes.Length);
-                            await limitedStream.ExplicitFlushAsync().ConfigureAwait(false);
+                            UpdateLastOperationTime();
 
-                            if (!request.Headers.KeepAliveConnection() || context.Response.CloseConnection)
-                                Client.Close();
-                            
-                            Logger.LogDebug("Completed");
+                            var context = new HttpContext(request, Client.RemoteEndPoint, Client);
+
+                            Logger?.LogInformation("{1} : Got request {0}", request.Uri, Client.RemoteEndPoint);
+
+                            await RequestHandler(context).ConfigureAwait(false);
+
+                            if (context.Response != null)
+                            {
+                                var streamWriter = new StreamWriter(new MemoryStream());
+                                await WriteResponse(context, streamWriter).ConfigureAwait(false);
+                                var bytes = ((MemoryStream) streamWriter.BaseStream).ToArray();
+                                await Stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+
+                                if (!(request.Headers.KeepAliveConnection() && context.Response.Headers.KeepAliveConnection()))
+                                    Client.Close();
+                            }
+
+                            UpdateLastOperationTime();
                         }
+                        catch (Exception ex)
+                        {
+                            // Hate people who make bad calls.
+                            Logger?.LogWarning($"Error while serving : {RemoteEndPoint} - {ex}");
+                            try
+                            {
+                                Client.Close();
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+                    }, Logger).ConfigureAwait(false);
 
-                        UpdateLastOperationTime();
-                    }
-                    else
+                    if (!result)
                     {
                         Client.Close();
                     }
@@ -86,14 +96,22 @@ namespace Ultz.Spirit.Http.One
             catch (Exception e)
             {
                 // Hate people who make bad calls.
-                Logger.LogWarning($"Error while serving : {RemoteEndPoint}", e);
-                Client.Close();
+                Logger?.LogWarning($"Error while serving : {RemoteEndPoint} - {e}");
+                try
+                {
+                    Client.Close();
+                }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            Logger.LogInformation("Lost Client {0}", RemoteEndPoint);
+            GC.Collect();
+            Logger?.LogInformation("Lost Client {0}", RemoteEndPoint);
         }
 
-        private async Task WriteResponse(HttpContext context, StreamWriter writer)
+        public static async Task WriteResponse(HttpContext context, StreamWriter writer)
         {
             var response = context.Response;
 
@@ -107,7 +125,7 @@ namespace Ultz.Spirit.Http.One
             foreach (var header in response.Headers.Where(x => x.Key != "server"))
                 await writer.WriteLineAsync($"{header.Key}: {header.Value}").ConfigureAwait(false);
             if (response.Headers.TryGetByName("Server", out var val))
-                await writer.WriteLineAsync("Server: "+Version + "; " + val);
+                await writer.WriteLineAsync("Server: "+Version + " " + val);
             else
                 await writer.WriteLineAsync("Server: "+Version);
 

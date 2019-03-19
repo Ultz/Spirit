@@ -22,11 +22,12 @@ namespace Ultz.Spirit
     {
         private readonly ExpandoObject _state = new ExpandoObject();
 
-        public HttpContext(IHttpRequest request, EndPoint remoteEndPoint)
+        public HttpContext(IHttpRequest request, EndPoint remoteEndPoint, IClient client)
         {
             Request = request;
             RemoteEndPoint = remoteEndPoint;
             Cookies = new CookiesStorage(Request.Headers.GetByNameOrDefault("cookie", string.Empty));
+            Client = client;
         }
 
         public IHttpRequest Request { get; }
@@ -35,6 +36,7 @@ namespace Ultz.Spirit
 
         public ICookiesStorage Cookies { get; }
 
+        public IClient Client { get; }
 
         public dynamic State => _state;
 

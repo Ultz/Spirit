@@ -3,7 +3,11 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/Ultz/Spirit</PackageProjectUrl>
         <PackageReleaseNotes>First release.</PackageReleaseNotes>
+        <Description>Project Sprit, the successor to SimpleServer, is a project to minimise latency and resource usage in .NET web applications.</Description>
         <PackageVersion>1.0.0-pre</PackageVersion>
         <Version>1.0.0</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <SolutionRoot>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)\..))</SolutionRoot>
+        <PackageOutputPath>$(SolutionRoot)\.nuget</PackageOutputPath>
     </PropertyGroup>
 </Project>

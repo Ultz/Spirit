@@ -2,13 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <RootNamespace>Ultz.Spirit.Http.One</RootNamespace>
+        <!-- TODO This package is not complete, don't allow it to be packed -->
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Ultz.Spirit.Http.One\Ultz.Spirit.Http.One.csproj" />
       <ProjectReference Include="..\..\Ultz.Spirit.Core\Ultz.Spirit.Core.csproj" />
-      <ProjectReference Include="..\Ultz.Spirit.Http.Common\Ultz.Spirit.Http.Common.csproj" />
       <ProjectReference Include="..\..\Ultz.Spirit\Ultz.Spirit.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="http2dotnet" Version="0.8.0" />
     </ItemGroup>
     
     <Import Project="..\..\..\.nuget\NuGet.props" />

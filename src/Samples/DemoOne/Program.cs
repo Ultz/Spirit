@@ -20,7 +20,9 @@ using Ultz.Extensions.Spirit.Ssl;
 using Ultz.Spirit;
 using Ultz.Spirit.Core;
 using Ultz.Spirit.Extensions;
+using Ultz.Spirit.Headers;
 using Ultz.Spirit.Http.One;
+using Ultz.Spirit.Responses;
 
 #endregion
 
@@ -45,18 +47,19 @@ namespace DemoOne
                 );
 
                 // Request handling : 
-                httpServer.Use
-                (
-                    (context, next) =>
-                    {
-                        Console.WriteLine("Got Request!");
-                        return next();
-                    }
-                );
+               // httpServer.Use
+               // (
+               //     (context, next) =>
+               //     {
+               //         Console.WriteLine("Got Request!");
+               //         return next();
+               //     }
+               // );
 
                 // Handler classes : 
-                httpServer.Use(new TimingHandler());
-                httpServer.Use(loggerProvider);
+                //httpServer.Use(new TimingHandler());
+                httpServer.Use(new PostTest());
+                //httpServer.Use(loggerProvider);
                 httpServer.Use
                 (
                     new HttpRouter().With(string.Empty, new IndexHandler())

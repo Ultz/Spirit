@@ -27,13 +27,13 @@ namespace Ultz.Spirit.Http.One
     {
         private static readonly char[] Separators = {'/'};
 
-        public async Task<IHttpRequest> Provide(StreamReader streamReader)
+        public async Task<bool> Provide(StreamReader streamReader, Action<IHttpRequest> onRequest, ILogger logger)
         {
             // parse the http request
             var request = await streamReader.ReadLineAsync().ConfigureAwait(false);
 
             if (request == null)
-                return null;
+                return false;
 
             var firstSpace = request.IndexOf(' ');
             var lastSpace = request.LastIndexOf(' ');
@@ -45,7 +45,7 @@ namespace Ultz.Spirit.Http.One
                 request.Substring(lastSpace + 1)
             };
 
-            if (tokens.Length != 3) return null;
+            if (tokens.Length != 3) return false;
 
 
             var httpProtocol = tokens[2];
@@ -71,14 +71,14 @@ namespace Ultz.Spirit.Http.One
                 (headersRaw.ToDictionary(k => k.Key, k => k.Value, StringComparer.InvariantCultureIgnoreCase));
             var post = await GetPostData(streamReader, headers).ConfigureAwait(false);
 
-            string verb;
-            if (!headers.TryGetByName("_method", out verb)) verb = tokens[0];
+            if (!headers.TryGetByName("_method", out var verb)) verb = tokens[0];
             var httpMethod = HttpMethodProvider.Default.Provide(verb);
-            return new HttpRequest
+            onRequest(new HttpRequest
             (
                 headers, httpMethod, httpProtocol, uri,
                 uri.OriginalString.Split(Separators, StringSplitOptions.RemoveEmptyEntries), queryString, post
-            );
+            ));
+            return true;
         }
 
         public HttpClientHandlerBase Handle

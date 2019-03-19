@@ -40,9 +40,9 @@ namespace Ultz.Spirit.Core
             RequestHandler = requestHandler;
             RequestProvider = requestProvider;
 
-            Stream = new BufferedStream(Client.Stream, 8192);
+            Stream = Client.Stream;
 
-            Logger.LogInformation("Got Client {0}", RemoteEndPoint);
+            Logger?.LogInformation("Got Client {0}", RemoteEndPoint);
 
             Task.Factory.StartNew(Process);
         }

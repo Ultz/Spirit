@@ -6,8 +6,6 @@ SimpleServer - another server library written by Ultz.
 
 ## Usage
 
-TODO: Add better documentation upon release.
-
 A sample for usage : 
 
 	using (var httpServer = new HttpServer(new HttpRequestProvider()))
@@ -51,10 +49,26 @@ Spirit is a simple HTTP server based on [µHttpSharp](https://github.com/bonesou
 
 ## Performance
 
-TODO: ab -n 10000 -c 50 -k -s 2 http://localhost:8000/
+```
+Server Software:        Spirit/1.0
+Document Path:          /
+Document Length:        21 bytes
+Requests per second:    5942.10 [#/sec] (mean)
+Time per request:       0.168 [ms] (mean, across all concurrent requests)
+
+Percentage of the requests served within a certain time (ms)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      2
+  95%      2
+  98%      2
+  99%      3
+ 100%      4 (longest request)
+ ```
 
 ## How To Contribute?
-
 
 Spirit uses and encourages [Early Pull Requests](https://medium.com/practical-blend/pull-request-first-f6bb667a9b6). Please don't wait until you're done to open a PR!
 

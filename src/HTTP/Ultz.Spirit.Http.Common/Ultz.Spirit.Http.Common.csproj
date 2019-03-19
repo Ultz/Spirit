@@ -8,6 +8,6 @@
       <ProjectReference Include="..\..\Ultz.Spirit.Core\Ultz.Spirit.Core.csproj" />
     </ItemGroup>
     
-    <Import Project="..\..\..\.nuget\NuGet.props"/>
+    <Import Project="..\..\..\.nuget\NuGet.props" />
 
 </Project>
