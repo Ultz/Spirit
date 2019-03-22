@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
@@ -9,6 +9,6 @@
       <ProjectReference Include="..\..\Ultz.Spirit.Core\Ultz.Spirit.Core.csproj" />
     </ItemGroup>
     
-    <Import Project="..\..\..\.nuget\NuGet.props"/>
+    <Import Project="..\..\..\.nuget\NuGet.props" />
 
 </Project>

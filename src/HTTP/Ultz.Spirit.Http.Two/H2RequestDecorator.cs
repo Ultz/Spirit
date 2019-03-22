@@ -15,14 +15,12 @@ namespace Ultz.Spirit.Http.Two
 {
     public class H2RequestDecorator : IHttpRequest
     {
-        public H2RequestDecorator(IHttpRequest @base, IStream h2stream, Connection connection)
+        public H2RequestDecorator(IHttpRequest @base, IStream h2stream)
         {
             Base = @base;
             Stream = h2stream;
-            Connection = connection;
         }
         public IHttpRequest Base { get; }
-        public Connection Connection { get; }
         public IStream Stream { get; }
         public IHttpHeaders Headers => Base.Headers;
         public HttpMethods Method => Base.Method;

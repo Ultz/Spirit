@@ -39,8 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Spirit.Hand
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Spirit.Routing", "src\Extensions\Ultz.Extensions.Spirit.Routing\Ultz.Extensions.Spirit.Routing.csproj", "{FF6D610C-4F98-4D85-9D8A-A7CB9706789C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Spirit.Http.Two", "src\HTTP\Ultz.Spirit.Http.Two\Ultz.Spirit.Http.Two.csproj", "{E58583DC-A83B-4105-97B4-39AF609C932D}"
-EndProject
+#TODO: Uncomment when our H2 implementation is stable
+#Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Spirit.Http.Two", "src\HTTP\Ultz.Spirit.Http.Two\Ultz.Spirit.Http.Two.csproj", "{E58583DC-A83B-4105-97B4-39AF609C932D}"
+#EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

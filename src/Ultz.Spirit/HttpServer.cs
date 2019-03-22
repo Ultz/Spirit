@@ -87,7 +87,7 @@ namespace Ultz.Spirit
                 }
                 catch (Exception e)
                 {
-                    Logger?.LogWarning("Error while getting client", e);
+                    Logger?.LogWarning("Error while getting client - " + e);
                 }
 
             Logger?.LogInformation("Spirit has stopped.");

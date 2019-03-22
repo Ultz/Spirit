@@ -10,9 +10,11 @@
 #region
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Microsoft.Extensions.Logging.Console;
 using Ultz.Extensions.Spirit.Handlers;
 using Ultz.Extensions.Spirit.Routing;
@@ -22,6 +24,7 @@ using Ultz.Spirit.Core;
 using Ultz.Spirit.Extensions;
 using Ultz.Spirit.Headers;
 using Ultz.Spirit.Http.One;
+using Ultz.Spirit.Http.Two;
 using Ultz.Spirit.Responses;
 
 #endregion
@@ -33,7 +36,7 @@ namespace DemoOne
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            using (var httpServer = new HttpServer(new HttpRequestProvider()))
+            using (var httpServer = new HttpServer(new H2RequestProvider()))
             {
                 // Normal port
                 httpServer.Use(new TcpListenerAdapter(new TcpListener(IPAddress.Loopback, 81)));
@@ -43,7 +46,11 @@ namespace DemoOne
                 var loggerProvider = new ConsoleLoggerProvider((s, level) => true, false);
                 httpServer.Use
                 (
-                    new SslListener(new TcpListenerAdapter(new TcpListener(IPAddress.Loopback, 444)), serverCertificate)
+                    new SslListenerBuilder().WithH2()
+                        .WithTls12()
+                        .WithServerCertificate(serverCertificate)
+                        .WithChild(new TcpListenerAdapter(new TcpListener(IPAddress.Loopback, 444)))
+                        .Build()
                 );
 
                 // Request handling : 
@@ -59,7 +66,7 @@ namespace DemoOne
                 // Handler classes : 
                 //httpServer.Use(new TimingHandler());
                 httpServer.Use(new PostTest());
-                //httpServer.Use(loggerProvider);
+                httpServer.Use(loggerProvider);
                 httpServer.Use
                 (
                     new HttpRouter().With(string.Empty, new IndexHandler())

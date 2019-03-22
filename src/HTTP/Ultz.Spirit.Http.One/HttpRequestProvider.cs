@@ -68,7 +68,7 @@ namespace Ultz.Spirit.Http.One
             }
 
             IHttpHeaders headers = new HttpHeaders
-                (headersRaw.ToDictionary(k => k.Key, k => k.Value, StringComparer.InvariantCultureIgnoreCase));
+                (headersRaw);
             var post = await GetPostData(streamReader, headers).ConfigureAwait(false);
 
             if (!headers.TryGetByName("_method", out var verb)) verb = tokens[0];
@@ -92,7 +92,7 @@ namespace Ultz.Spirit.Http.One
             return new HttpClientHandler(client, requestHandler, requestProvider, logger);
         }
 
-        private static IHttpHeaders GetQueryStringData(ref string url)
+        public static IHttpHeaders GetQueryStringData(ref string url)
         {
             var queryStringIndex = url.IndexOf('?');
             IHttpHeaders queryString;
@@ -109,7 +109,7 @@ namespace Ultz.Spirit.Http.One
             return queryString;
         }
 
-        private static async Task<IHttpPost> GetPostData(StreamReader streamReader, IHttpHeaders headers)
+        public static async Task<IHttpPost> GetPostData(StreamReader streamReader, IHttpHeaders headers)
         {
             int postContentLength;
             IHttpPost post;

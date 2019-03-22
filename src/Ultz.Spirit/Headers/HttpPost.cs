@@ -23,12 +23,9 @@ namespace Ultz.Spirit.Headers
     {
         private readonly Lazy<IHttpHeaders> _parsed;
 
-        private readonly int _readBytes;
-
-        public HttpPost(byte[] raw, int readBytes)
+        public HttpPost(byte[] raw)
         {
             Raw = raw;
-            _readBytes = readBytes;
             _parsed = new Lazy<IHttpHeaders>(Parse);
         }
 
@@ -40,12 +37,12 @@ namespace Ultz.Spirit.Headers
 
             var raw = Encoding.UTF8.GetBytes(rawEncoded, 0, readBytes);
 
-            return new HttpPost(raw, readBytes);
+            return new HttpPost(raw);
         }
 
         private IHttpHeaders Parse()
         {
-            var body = Encoding.UTF8.GetString(Raw, 0, _readBytes);
+            var body = Encoding.UTF8.GetString(Raw);
             var parsed = new QueryStringHttpHeaders(body);
 
             return parsed;

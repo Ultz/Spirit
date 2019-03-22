@@ -12,6 +12,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Ultz.Spirit.Core;
 
 #endregion
@@ -22,9 +23,9 @@ namespace Ultz.Spirit.Headers
     [DebuggerTypeProxy(typeof(HttpHeadersDebuggerProxy))]
     public class HttpHeaders : IHttpHeaders
     {
-        private readonly IDictionary<string, string> _values;
+        private readonly List<KeyValuePair<string, string>> _values;
 
-        public HttpHeaders(IDictionary<string, string> values)
+        public HttpHeaders(List<KeyValuePair<string, string>> values)
         {
             _values = values;
         }
@@ -34,12 +35,15 @@ namespace Ultz.Spirit.Headers
 
         public string GetByName(string name)
         {
-            return _values[name];
+            return _values.First(x => x.Key.ToLower() == name.ToLower()).Value;
         }
 
         public bool TryGetByName(string name, out string value)
         {
-            return _values.TryGetValue(name, out value);
+            value = null;
+            if (_values.All(x => x.Key.ToLower() != name.ToLower())) return false;
+            value = GetByName(name);
+            return true;
         }
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()

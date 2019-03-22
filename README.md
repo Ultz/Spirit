@@ -41,11 +41,12 @@ A sample for usage :
 Spirit is a simple HTTP server based on [µHttpSharp](https://github.com/bonesoul/uhttpsharp) and inspired by
 [koa](http://koajs.com), and has the following features :
 
-* [RESTful](http://en.wikipedia.org/wiki/Representational_state_transfer) controllers
+* [RESTful](http://en.wikipedia.org/wiki/Representational_state_transfer) controllers (coming soon)
 * SSL/TLS Support
 * Easy Chain-Of-Responsibility architecture
 * Modularity
 * .NET Standard support
+* HTTP/2 over HTTPS
 
 ## Performance
 

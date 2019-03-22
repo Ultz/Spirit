@@ -31,7 +31,6 @@ namespace Ultz.Extensions.Spirit.Compression
             _memoryStream = memoryStream;
 
             ResponseCode = child.ResponseCode;
-            CloseConnection = child.CloseConnection;
             Headers =
                 new CompressionHeaders
                 (

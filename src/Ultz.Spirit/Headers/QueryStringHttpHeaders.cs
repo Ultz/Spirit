@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Ultz.Spirit.Core;
 
 #endregion
@@ -43,7 +44,7 @@ namespace Ultz.Spirit.Headers
             }
 
             Count = values.Count;
-            _child = new HttpHeaders(values);
+            _child = new HttpHeaders(values.ToList());
         }
 
         internal int Count { get; }

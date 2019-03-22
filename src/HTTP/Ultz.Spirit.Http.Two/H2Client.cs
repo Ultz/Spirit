@@ -16,17 +16,15 @@ namespace Ultz.Spirit.Http.Two
 {
     public class H2Client : IClient
     {
-        public H2Client(IStream stream, IClient @base, Connection connection)
+        public H2Client(IStream stream, IClient @base)
         {
             Client = @base;
-            Connection = connection;
             Base = stream;
             Stream = new H2Stream(this);
         }
 
         public IClient Client { get; }
         public IStream Base { get; }
-        public Connection Connection { get; }
         public Stream Stream { get; }
         public bool Connected { get; }
         public EndPoint RemoteEndPoint { get; }

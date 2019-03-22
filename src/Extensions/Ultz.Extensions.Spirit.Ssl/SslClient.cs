@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using Ultz.Spirit.Core;
 
 #endregion
@@ -25,12 +26,21 @@ namespace Ultz.Extensions.Spirit.Ssl
         private readonly IClient _child;
         private readonly SslStream _sslStream;
 
+        #if NETCOREAPP2_1 || NETSTANDARD2_1
+        public SslClient(IClient child, SslServerAuthenticationOptions certificate)
+        {
+            _child = child;
+            _sslStream = new SslStream(_child.Stream);
+            _sslStream.AuthenticateAsServerAsync(certificate, CancellationToken.None).GetAwaiter().GetResult();
+        }
+        #else
         public SslClient(IClient child, X509Certificate certificate)
         {
             _child = child;
             _sslStream = new SslStream(_child.Stream);
             _sslStream.AuthenticateAsServer(certificate, false, SslProtocols.Tls, true);
         }
+        #endif
 
         public Stream Stream => _sslStream;
 

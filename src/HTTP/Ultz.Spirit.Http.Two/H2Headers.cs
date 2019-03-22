@@ -1,5 +1,5 @@
 // 
-// CompressionHeaders.cs
+// H2Headers.cs
 // 
 // Copyright (C) 2019 Ultz Limited
 // 
@@ -7,29 +7,21 @@
 // of the MIT license. See the LICENSE file for details.
 // 
 
-#region
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Http2.Hpack;
 using Ultz.Spirit.Core;
 
-#endregion
-
-namespace Ultz.Extensions.Spirit.Compression
+namespace Ultz.Spirit.Http.Two
 {
-    public class CompressionHeaders : IHttpHeaders
+    public class H2Headers : IHttpHeaders
     {
-        private readonly IList<KeyValuePair<string, string>> _base;
-
-        public CompressionHeaders(IList<KeyValuePair<string, string>> @base)
-        {
-            _base = @base;
-        }
-
+        public IEnumerable<HeaderField> Headers { get; set; }
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
-            return _base.GetEnumerator();
+            return Headers.Select(x => new KeyValuePair<string, string>(x.Name, x.Value)).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -39,14 +31,14 @@ namespace Ultz.Extensions.Spirit.Compression
 
         public string GetByName(string name)
         {
-            return _base.First(x => x.Key.ToLower() == name.ToLower()).Value;
+            return Headers.First(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase)).Value;
         }
 
         public bool TryGetByName(string name, out string value)
         {
             value = null;
-            if (_base.All(x => x.Key.ToLower() != name.ToLower())) return false;
-            value = _base.First(x => x.Key.ToLower() == name.ToLower()).Value;
+            if (!Headers.Any(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase))) return false;
+            value = GetByName(name);
             return true;
         }
     }

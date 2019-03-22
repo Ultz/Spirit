@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,6 +10,7 @@
       <ProjectReference Include="..\..\Extensions\Ultz.Extensions.Spirit.Routing\Ultz.Extensions.Spirit.Routing.csproj" />
       <ProjectReference Include="..\..\Extensions\Ultz.Extensions.Spirit.Ssl\Ultz.Extensions.Spirit.Ssl.csproj" />
       <ProjectReference Include="..\..\HTTP\Ultz.Spirit.Http.One\Ultz.Spirit.Http.One.csproj" />
+      <ProjectReference Include="..\..\HTTP\Ultz.Spirit.Http.Two\Ultz.Spirit.Http.Two.csproj" />
       <ProjectReference Include="..\..\Ultz.Spirit\Ultz.Spirit.csproj" />
     </ItemGroup>
 
