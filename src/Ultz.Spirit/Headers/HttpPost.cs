@@ -10,6 +10,7 @@
 #region
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,11 +32,15 @@ namespace Ultz.Spirit.Headers
 
         public static async Task<IHttpPost> Create(StreamReader reader, int postContentLength)
         {
-            var rawEncoded = new char[postContentLength];
+            var raw = new byte[postContentLength];
 
-            var readBytes = await reader.ReadAsync(rawEncoded, 0, rawEncoded.Length).ConfigureAwait(false);
-
-            var raw = Encoding.UTF8.GetBytes(rawEncoded, 0, readBytes);
+            var readBytes = 0;
+            while (readBytes != postContentLength)
+            {
+                readBytes += await reader.BaseStream
+                    .ReadAsync(raw, readBytes, Math.Min(postContentLength - readBytes, 1024))
+                    .ConfigureAwait(false);
+            }
 
             return new HttpPost(raw);
         }
