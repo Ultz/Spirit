@@ -13,6 +13,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Ultz.Spirit.Core;
 
@@ -23,6 +24,7 @@ namespace Ultz.Spirit.Headers
     public class HttpPost : IHttpPost
     {
         private readonly Lazy<IHttpHeaders> _parsed;
+        public static Thread _thread;
 
         public HttpPost(byte[] raw)
         {
@@ -30,14 +32,15 @@ namespace Ultz.Spirit.Headers
             _parsed = new Lazy<IHttpHeaders>(Parse);
         }
 
-        public static async Task<IHttpPost> Create(StreamReader reader, int postContentLength)
+        public static async Task<IHttpPost> Create(Stream stream, int postContentLength)
         {
+            _thread = Thread.CurrentThread;
             var raw = new byte[postContentLength];
 
             var readBytes = 0;
             while (readBytes != postContentLength)
             {
-                readBytes += await reader.BaseStream
+                readBytes += await stream
                     .ReadAsync(raw, readBytes, Math.Min(postContentLength - readBytes, 1024))
                     .ConfigureAwait(false);
             }

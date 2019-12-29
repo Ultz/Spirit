@@ -29,9 +29,9 @@ namespace Ultz.Spirit.Http.One
             _child = child;
         }
 
-        public async Task<bool> Provide(StreamReader streamReader, Action<IHttpRequest> onRequest, ILogger logger)
+        public async Task<bool> Provide(Stream s, Action<IHttpRequest> onRequest, ILogger logger)
         {
-            return await _child.Provide(streamReader, (childValue) =>
+            return await _child.Provide(s, (childValue) =>
             {
                 string methodName;
                 if (!childValue.Headers.TryGetByName("X-HTTP-Method-Override", out methodName)) onRequest(childValue);

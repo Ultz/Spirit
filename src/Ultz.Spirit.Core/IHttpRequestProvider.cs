@@ -24,10 +24,10 @@ namespace Ultz.Spirit.Core
         ///     Provides an <see cref="IHttpRequest" /> based on the context of the stream,
         ///     May return null / throw exceptions on invalid requests.
         /// </summary>
-        /// <param name="streamReader"></param>
+        /// <param name="stream"></param>
         /// <param name="onRequest"></param>
         /// <returns></returns>
-        Task<bool> Provide(StreamReader streamReader, Action<IHttpRequest> onRequest, ILogger logger);
+        Task<bool> Provide(Stream stream, Action<IHttpRequest> onRequest, ILogger logger);
 
         HttpClientHandlerBase Handle
         (

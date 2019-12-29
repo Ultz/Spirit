@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ultz.Spirit.Core;
@@ -27,10 +28,10 @@ namespace Ultz.Spirit.Http.One
     {
         private static readonly char[] Separators = {'/'};
 
-        public async Task<bool> Provide(StreamReader streamReader, Action<IHttpRequest> onRequest, ILogger logger)
+        public async Task<bool> Provide(Stream s, Action<IHttpRequest> onRequest, ILogger logger)
         {
             // parse the http request
-            var request = await streamReader.ReadLineAsync().ConfigureAwait(false);
+            var request = await s.ReadLineAsync().ConfigureAwait(false);
 
             if (request == null)
                 return false;
@@ -59,7 +60,7 @@ namespace Ultz.Spirit.Http.One
             // get the headers
             string line;
 
-            while (!string.IsNullOrEmpty(line = await streamReader.ReadLineAsync().ConfigureAwait(false)))
+            while (!string.IsNullOrEmpty(line = await s.ReadLineAsync().ConfigureAwait(false)))
             {
                 var currentLine = line;
 
@@ -69,7 +70,7 @@ namespace Ultz.Spirit.Http.One
 
             IHttpHeaders headers = new HttpHeaders
                 (headersRaw);
-            var post = await GetPostData(streamReader, headers).ConfigureAwait(false);
+            var post = await GetPostData(s, headers).ConfigureAwait(false);
 
             if (!headers.TryGetByName("_method", out var verb)) verb = tokens[0];
             var httpMethod = HttpMethodProvider.Default.Provide(verb);
@@ -109,12 +110,12 @@ namespace Ultz.Spirit.Http.One
             return queryString;
         }
 
-        public static async Task<IHttpPost> GetPostData(StreamReader streamReader, IHttpHeaders headers)
+        public static async Task<IHttpPost> GetPostData(Stream stream, IHttpHeaders headers)
         {
             int postContentLength;
             IHttpPost post;
             if (headers.TryGetByName("content-length", out postContentLength) && postContentLength > 0)
-                post = await HttpPost.Create(streamReader, postContentLength).ConfigureAwait(false);
+                post = await HttpPost.Create(stream, postContentLength).ConfigureAwait(false);
             else
                 post = EmptyHttpPost.Empty;
             return post;

@@ -45,9 +45,7 @@ namespace Ultz.Spirit.Http.One
             {
                 while (Client.Connected)
                 {
-                    var streamReader = new StreamReader(Stream);
-
-                    var result = await RequestProvider.Provide(streamReader, async request =>
+                    var result = await RequestProvider.Provide(Stream, async request =>
                     {
                         try
                         {
@@ -107,7 +105,6 @@ namespace Ultz.Spirit.Http.One
                 }
             }
 
-            GC.Collect();
             Logger?.LogInformation("Lost Client {0}", RemoteEndPoint);
         }
 
